@@ -4,7 +4,7 @@ import { Circle, CircleMarker, MapContainer, Marker, Popup, TileLayer, Tooltip }
 import "leaflet/dist/leaflet.css";
 import type { AmenityReport, CrimeReport } from "../../shared/types.ts";
 import { AMENITY_GROUPS, AMENITY_STYLE } from "../lib/categories.ts";
-import { formatDistance } from "../lib/format.ts";
+import { formatDistance, formatNumber } from "../lib/format.ts";
 import { labelFor } from "../../shared/crimeLabels.ts";
 
 const homeIcon = L.divIcon({
@@ -108,7 +108,14 @@ export function AreaMap({ lat, lon, postcode, amenities, crime }: Props) {
       </MapContainer>
       <p className="map__caption">
         Dashed circle shows a {((amenities?.radiusM ?? 1200) / 1000).toFixed(1)} km radius, roughly a 15-minute walk.
-        {showCrime && crime && " Crime locations are approximate – police.uk snaps them to nearby anonymous points."}
+        {showCrime && crime && (
+          <>
+            {" "}
+            Crime locations are approximate – police.uk snaps them to nearby anonymous points.
+            {crime.points.length < crime.total &&
+              ` Showing ${formatNumber(crime.points.length)} of ${formatNumber(crime.total)} crimes.`}
+          </>
+        )}
       </p>
     </div>
   );

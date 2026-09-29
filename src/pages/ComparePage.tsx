@@ -21,7 +21,7 @@ function useSection<T>(postcodes: string[], section?: string) {
 }
 
 function cell<T>(state: ApiState<T>, render: (data: T) => ReactNode): ReactNode {
-  if (state.status === "loading") return <span className="muted">…</span>;
+  if (state.status === "loading") return <span className="muted">Loading…</span>;
   if (state.status === "error") return <span className="muted">Unavailable</span>;
   return render(state.data);
 }
